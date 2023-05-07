@@ -1,0 +1,56 @@
+CREATE DATABASE Prova_Esame;
+
+USE Prova_Esame;
+
+CREATE TABLE Parco (
+    ID_Parco INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    Nome VARCHAR(50),
+    Regione VARCHAR(50)
+);
+
+CREATE TABLE Specie (
+    ID_Specie INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    Nome VARCHAR(50),
+    Inizio_monitoraggio DATE,
+    Fine_monitoraggio DATE,
+    N_Cuccioli_Maschio INT,
+    N_Cuccioli_Femmine INT,
+    N_Adulti_Femmine INT,
+    N_Adulti_Maschio INT,
+    ID_Parco INT,
+    FOREIGN KEY (ID_Parco) REFERENCES Parco(ID_Parco)
+);
+
+CREATE TABLE Esemplare (
+    ID_Esemplare INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    Nome VARCHAR(50),
+    Data_Nascita DATE,
+    Data_Morte DATE,
+    ID_Specie INT,
+    FOREIGN KEY (ID_Specie) REFERENCES Specie(ID_Specie)
+);
+
+CREATE TABLE Flora (
+    ID_Flora INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    Flora_tipo VARCHAR(50),
+    ID_Parco INT,
+    FOREIGN KEY (ID_Parco) REFERENCES Parco(ID_Parco)
+);
+
+CREATE TABLE Peculiarità (
+    ID_Peculiarità INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    Nome VARCHAR(50),
+    Stagione_Fioritura VARCHAR(50),
+    ID_Flora INT,
+    Specie_Flora VARCHAR(50),
+    FOREIGN KEY (ID_Flora) REFERENCES Flora(ID_Flora)
+);
+
+CREATE TABLE Guardiano (
+    C_F VARCHAR(16) NOT NULL PRIMARY KEY,
+    Nome VARCHAR(50),
+    Cognome VARCHAR(50),
+    Pass VARCHAR(50),
+    ID_Parco INT,
+    FOREIGN KEY (ID_Parco) REFERENCES Parco(ID_Parco)
+);
