@@ -5,7 +5,7 @@
 <?php
     $host = "localhost";
     $root = "root";    
-    $pass = "Federico22giulia";
+    $pass = "";
     $db = "Prova_Esame";
     
     $connessione = mysqli_connect ($host, $root, $pass, $db) or die("Connessione non riuscita " . mysqli_connect_error() );
@@ -16,21 +16,30 @@
 
 <form action="Flora.php" method="POST">
   <label >Inserisci il nome</label><br>
-  <input type="date" name="nomeFlo "><br>
+  <input type="text" name="nomeFlo "><br>
   <label >Inserisci la stagione di fioritura </label><br>
   <input type="date" name="Stagione_Fioritura  "><br><br>
-  <label >Inserisci la specie </label><br>
-  <input type="text" name="specie"><br><br>
-  <label for="fname">Inserisci la flora</label><br>
-  <input type="text" name="C_F"><br>
+  <select name="specie">
+  <?php
+       $query = "SELECT * FROM Prova_Esame.flora";
+       $result = mysqli_query ($connessione, $query) or die ("Query fallita " . mysqli_error($connessione) . " " . mysqli_errno($connessione));
+       $num_righe = mysqli_num_rows($result);
+        for ($i=1; $i<=$num_righe; $i++){
+        $row = mysqli_fetch_assoc($result);
+        $id = $row['ID_Flora'];
+        $name = $row['Flora_tipo'];
+        echo "<option value='$id'>$name</option>";
+        }
+  ?>
+  </select>
   <input type="submit" value="Invia">
 </form> 
 <a href="Fauna.php"><button>Inserisci Esemplare</button></a>
 <?php
 if(isset($_POST['nomeFlo'])){
-    $_POST['nomeFlo']=$nomeFlo;
-    $_POST['Stagione_Fioritura']=$Stagione_Fioritura;
-    $_POST['specie']=$specie;
+   $nomeFlo=$_POST['nomeFlo'];
+   $Stagione_Fioritura=$_POST['Stagione_Fioritura'];
+   $specie=$_POST['specie'];
      $query = "INSERT INTO prova_esame.Peculiarità(Nome ,Stagione_Fioritura,Specie_Flora)
       VALUES ('".$nomeFlo."','".$Stagione_Fioritura."','".$specie."')";
 
@@ -42,7 +51,9 @@ if(isset($_POST['nomeFlo'])){
      }
      
 }
-?>?>
+
+mysqli_close ($connessione)or die("Chiusura connessione fallita " . mysqli_error ($connessione));
+?>
 
 </body>
 </html>
